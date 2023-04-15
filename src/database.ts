@@ -19,9 +19,10 @@ const config = () => {
     port: Number(process.env.DB_PORT!),
   };
 };
+console.log(config())
 const client = new Client(config());
 
-const startDatabase = async () => {
+const startDatabase = async (): Promise<void> => {
   await client.connect();
   console.log("Database connected.");
 };
