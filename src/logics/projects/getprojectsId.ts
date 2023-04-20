@@ -20,7 +20,7 @@ const getProjects = async (
         pj."estimatedTime" as "projectEstimatedTime",
         pj."repository" as "projectRepository",
         pj."startDate" as "projectStartDate",
-        pj."endData" as "projectEndDate",
+        pj."endDate" as "projectEndDate",
         pj."developerId" as "projectDeveloperID",
         te."id" as "technologyID",
         te."name" as "technologyName"

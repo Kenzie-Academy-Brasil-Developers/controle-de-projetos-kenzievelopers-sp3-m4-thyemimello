@@ -1,8 +1,6 @@
 import { Request, Response } from "express";
 import { QueryConfig, QueryResult } from "pg";
-import {
-  TProjects,
-} from "../../interfaces/projectsInterfaces";
+import { TProjects } from "../../interfaces/projectsInterfaces";
 import { client } from "../../database";
 
 const getDevelopersInfos = async (
@@ -17,10 +15,19 @@ const getDevelopersInfos = async (
         di."developerSince",
         di."preferredOS"
     FROM developers de
-    JOIN developer_infos di ON de."id" = di."developerId"
+    LEFT JOIN developer_infos di ON de.id = di."developerId"
+    WHERE 
+     de.id = $1;  
+    
     `;
-  const queryResult: QueryResult<TProjects> = await client.query(queryString);
 
+  const queryConfig: QueryConfig = {
+    text: queryString,
+    values: [id]
+    };
+
+  const queryResult: QueryResult<TProjects> = await client.query(queryConfig);
+  console.log(queryResult.rows);
   return res.json(queryResult.rows);
 };
 

@@ -10,6 +10,13 @@ const createDevelopersInfos = async (
   ): Promise<Response> => {
     const developersInfoData: TDevelopersInfoRequest = req.body;
     developersInfoData.developerId = parseInt(req.params.id);
+    const tech = ['Windows', 'Linux', 'MacOS']
+    
+    const includesTech = tech.includes(developersInfoData.preferredOS)
+    
+    if(includesTech === false){
+      return res.status(409).json({ message: "OS não mapeado." });
+    }
   
     const queryString: string = format(
       `

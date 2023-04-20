@@ -1,31 +1,40 @@
-import { Request, Response } from "express"
-import { QueryResult } from "pg"
-import { client } from "../../database"
-import format from "pg-format"
-import { TProjects } from "../../interfaces/projectsInterfaces"
+import { Request, Response } from "express";
+import { QueryConfig, QueryResult } from "pg";
+import { client } from "../../database";
+import format from "pg-format";
+import { TProjects } from "../../interfaces/projectsInterfaces";
+import { TDevelopers } from "../../interfaces/developersInterfaces";
 
 const updateProject = async (request: Request, response: Response) => {
-    const id: number = +request.params.id;
-  
-    const body = request.body;
-    const allowedKeys = ["endDate", "estimatedTime"];
-    let newData: any = {};
-  
-    for (const key in body) {
-      if (allowedKeys.includes(key)) {
-        newData[key] = body[key];
-      }
-    }
-  
-    if (!newData.endDate && !newData.estimatedTime) {
-      return response.status(400).json({
-        message: "At least one of those keys must be send.",
-        keys: ["endDate", "estimatedTime"],
-      });
-    }
-  
-      const queryString: string = format(
-        `
+  const id: number = +request.params.id;
+
+  const body = request.body;
+
+  const queryStringUser: string = `
+    SELECT
+        *
+    FROM
+        developers
+    WHERE
+        id = $1;    
+    `;
+  const queryConfig: QueryConfig = {
+    text: queryStringUser,
+    values: [body.developerId],
+  };
+
+  const queryResultUser: QueryResult<TDevelopers> = await client.query(
+    queryConfig
+  );
+
+  if (queryResultUser.rowCount === 0) {
+    return response.status(404).json({
+      message: "Developer not found",
+    });
+  }
+
+  const queryString: string = format(
+    `
         UPDATE
           projects
         SET
@@ -34,17 +43,14 @@ const updateProject = async (request: Request, response: Response) => {
           id = %s
         RETURNING *;
       `,
-        Object.keys(newData),
-        Object.values(newData),
-        id
-      );
-  
-      const queryResult: QueryResult<TProjects> = await client.query(
-        queryString
-      );
-  
-      return response.status(200).json(queryResult.rows[0]);
- 
-  };
-  
-  export {updateProject}
+    Object.keys(body),
+    Object.values(body),
+    id
+  );
+
+  const queryResult: QueryResult<TProjects> = await client.query(queryString);
+
+  return response.status(200).json(queryResult.rows[0]);
+};
+
+export { updateProject };

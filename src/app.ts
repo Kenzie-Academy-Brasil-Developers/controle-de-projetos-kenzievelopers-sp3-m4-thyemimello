@@ -17,11 +17,12 @@ import { ensureProjectsExistsMiddleware } from "./middlewares/projects/projectsM
 import { updateProject } from "./logics/projects/updateProject";
 import { deleteProject } from "./logics/projects/deleteProjects";
 import { deleteTechnology } from "./logics/techonologies/deleteTechonologies";
+import { getProjects } from "./logics/projects/getprojectsId";
 
 const app: Application = express();
 app.use(express.json());
 
-app.post("/developers", createDevelopers);
+app.post("/developers", ensureEmailDevelopersExist, createDevelopers);
 app.post(
   "/developers/:id/infos",
   ensureDevelopersExistsMiddleware,
@@ -46,11 +47,14 @@ app.delete(
 );
 
 app.post("/projects", createProjects);
-app.get("/projects/:id", ensureProjectsExistsMiddleware, createTechnology);
+app.get("/projects/:id", ensureProjectsExistsMiddleware, getProjects);
 app.patch("/projects/:id", ensureProjectsExistsMiddleware, updateProject);
 app.delete("/projects/:id", ensureProjectsExistsMiddleware, deleteProject);
 app.post("/projects/:id", ensureProjectsExistsMiddleware, createTechnology);
 app.delete("/projects/:id", ensureProjectsExistsMiddleware, deleteTechnology);
+
+app.post("/projects/:id/technologies", ensureProjectsExistsMiddleware, createTechnology)
+app.delete("/projects/:id/technologies/:name", ensureProjectsExistsMiddleware, deleteTechnology)
 
 app.listen(3000, async () => {
   await startDatabase();

@@ -1,6 +1,5 @@
+-- Active: 1677169316233@@127.0.0.1@5432@techonologics@public
 CREATE TYPE "OS" AS ENUM ('Windows', 'Linux', 'MacOS');
-
-
 CREATE TABLE IF NOT EXISTS developers(
     "id" SERIAL PRIMARY KEY,
     "name" VARCHAR(50) NOT NULL,
@@ -10,9 +9,9 @@ CREATE TABLE IF NOT EXISTS developers(
 CREATE TABLE IF NOT EXISTS developer_infos(
     "id" SERIAL PRIMARY KEY,
     "developerSince" DATE NOT NULL,
-    "preferredOS" OS NOT NULL,
+    "preferredOS" "OS" NOT NULL,
     "developerId" INTEGER NOT NULL UNIQUE,
-    FOREIGN KEY ("developerId") REFERENCES developers ("id")
+    FOREIGN KEY ("developerId") REFERENCES developers ("id") ON DELETE CASCADE
 
 );
 
@@ -23,9 +22,9 @@ CREATE TABLE IF NOT EXISTS projects(
     "estimatedTime" VARCHAR(20) NOT NULL,
     "repository" VARCHAR(120) NOT NULL,
     "startDate" DATE NOT NULL,
-    "endData" DATE,
-    "developerId" INTEGER UNIQUE,
-    FOREIGN KEY ("developerId") REFERENCES developers ("id")
+    "endDate" DATE,
+    "developerId" INTEGER,
+    FOREIGN KEY ("developerId") REFERENCES developers ("id") ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS technologies(
@@ -44,8 +43,8 @@ CREATE TABLE IF NOT EXISTS projects_technologies(
     "addedIn" DATE NOT NULL,
     "technologyId" INTEGER NOT NULL,
     "projectId" INTEGER NOT NULL,
-    FOREIGN KEY ("technologyId") REFERENCES "technologies" ("id"),
-     FOREIGN KEY ("projectId") REFERENCES "projects" ("id")
+    FOREIGN KEY ("technologyId") REFERENCES "technologies" ("id") ON DELETE CASCADE,
+    FOREIGN KEY ("projectId") REFERENCES "projects" ("id") ON DELETE CASCADE
 );
 
 SELECT
@@ -53,7 +52,8 @@ SELECT
     di."developerSince",
     di."preferredOS"
 FROM developers de
-    JOIN developer_infos di ON de."id" = di."developerId";
+    JOIN developer_infos di ON de."id" = di."developerId"
+
 
 SELECT
     pj.*,
@@ -63,7 +63,7 @@ SELECT
     pj."estimatedTime" as "projectEstimatedTime",
     pj."repository" as "projectRepository",
     pj."startDate" as "projectStartDate",
-    pj."endData" as "projectEndDate",
+    pj."endDate" as "projectEndDate",
     pj."developerId" as "projectDeveloperID",
     te."id" as "technologyID",
     te."name" as "technologyName"
@@ -84,7 +84,7 @@ SELECT
     pj."estimatedTime" as "projectEstimatedTime",
     pj."repository" as "projectRepository",
     pj."startDate" as "projectStartDate",
-    pj."endData" as "projectEndDate"
+    pj."endDate" as "projectEndDate"
 FROM 
     projects_technologies  pt
 FULL JOIN
