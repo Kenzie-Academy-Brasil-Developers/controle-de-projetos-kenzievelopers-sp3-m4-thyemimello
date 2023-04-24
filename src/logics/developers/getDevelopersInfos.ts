@@ -27,8 +27,8 @@ const getDevelopersInfos = async (
     };
 
   const queryResult: QueryResult<TProjects> = await client.query(queryConfig);
-  console.log(queryResult.rows);
-  return res.json(queryResult.rows);
+
+  return res.json(queryResult.rows[0]);
 };
 
 export { getDevelopersInfos };
