@@ -1,10 +1,5 @@
 import { Request, Response, NextFunction } from "express";
 import { QueryConfig, QueryResult } from "pg";
-import {
-  TDevelopers,
-  TDevelopersRequest,
-  TUpdateDeveloperRequest,
-} from "../../interfaces/developersInterfaces";
 import { client } from "../../database";
 import format from "pg-format";
 import { TDevelopersInfoRequest } from "../../interfaces/infosDevelopersInterface";

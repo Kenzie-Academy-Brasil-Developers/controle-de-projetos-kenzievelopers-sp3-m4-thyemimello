@@ -1,6 +1,5 @@
 import { Request, Response} from "express";
 import format from "pg-format";
-import { QueryResult } from "pg";
 import { client } from "../../database";
 
 const deleteDeveloper = async (request: Request, response: Response) => {

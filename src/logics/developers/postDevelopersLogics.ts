@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import {
   TDevelopers,
   TDevelopersRequest,
-  TUpdateDeveloperRequest,
 } from "../../interfaces/developersInterfaces";
 import format from "pg-format";
 import { QueryResult } from "pg";
