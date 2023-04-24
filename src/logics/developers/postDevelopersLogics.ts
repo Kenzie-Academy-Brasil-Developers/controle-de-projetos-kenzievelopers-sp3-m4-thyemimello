@@ -28,7 +28,7 @@ const createDevelopers = async (
     Object.values(developersData)
   );
 
-  console.log(queryString);
+
   const queryResult: QueryResult<TDevelopers> = await client.query(queryString);
 
   return res.status(201).json(queryResult.rows[0]);

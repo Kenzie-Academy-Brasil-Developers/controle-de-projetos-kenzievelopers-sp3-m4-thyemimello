@@ -108,7 +108,7 @@ const createTechnology = async (
     );
 
     technologyQueryResult = await client.query(queryString);
-    console.log(technologyQueryResult.rows);
+
 
     return response.status(201).json(technologyQueryResult.rows[0]);
  
