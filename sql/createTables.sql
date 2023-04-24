@@ -40,7 +40,7 @@ VALUES
 
 CREATE TABLE IF NOT EXISTS projects_technologies(
     "id" SERIAL PRIMARY KEY,
-    "addedIn" DATE NOT NULL,
+    "addedln" DATE NOT NULL,
     "technologyId" INTEGER NOT NULL,
     "projectId" INTEGER NOT NULL,
     FOREIGN KEY ("technologyId") REFERENCES "technologies" ("id") ON DELETE CASCADE,
@@ -79,7 +79,7 @@ SELECT
     te."id" as "technologyId",
     te."name" as "technologyName",
     pj."id" as "projectId",
-    pj."name" as "projectName",
+    pj."name" as "projectName",e
     pj."description" as "projectDescription",
     pj."estimatedTime" as "projectEstimatedTime",
     pj."repository" as "projectRepository",

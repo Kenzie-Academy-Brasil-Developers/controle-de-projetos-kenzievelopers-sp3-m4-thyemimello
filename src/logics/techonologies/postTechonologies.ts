@@ -69,7 +69,7 @@ const createTechnology = async (
    const queryStringPro = format(
       `
     INSERT INTO
-        projects_technologies ("addedin", "projectId", "technologyId")
+        projects_technologies ("addedln", "projectId", "technologyId")
     VALUES
         (%L, %L, %L)
     RETURNING *;

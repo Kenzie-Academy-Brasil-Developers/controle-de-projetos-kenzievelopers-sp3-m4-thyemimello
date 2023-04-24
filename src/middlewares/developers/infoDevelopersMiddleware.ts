@@ -38,7 +38,7 @@ const ensureDeveloperInfoNotExists = async (
       if (queryResult.rows[0].developerSince || queryResult.rows[0].preferredOS) {
     
       return response
-        .status(409)
+        .status(400)
         .json({ message: "Developer infos already exists." });
     }
 

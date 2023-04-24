@@ -29,7 +29,7 @@ const updateProject = async (request: Request, response: Response) => {
 
   if (queryResultUser.rowCount === 0) {
     return response.status(404).json({
-      message: "Developer not found",
+      message: "Project not found",
     });
   }
 

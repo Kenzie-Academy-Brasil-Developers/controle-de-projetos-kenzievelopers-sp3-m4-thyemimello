@@ -56,8 +56,5 @@ app.delete("/projects/:id", ensureProjectsExistsMiddleware, deleteTechnology);
 app.post("/projects/:id/technologies", ensureProjectsExistsMiddleware, createTechnology)
 app.delete("/projects/:id/technologies/:name", ensureProjectsExistsMiddleware, deleteTechnology)
 
-app.listen(3000, async () => {
-  await startDatabase();
-  console.log("Server is running");
-});
+
 export default app;
